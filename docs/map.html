@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MAP</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<style>
+div {
+  margin-bottom: 20px;
+}
+
+div#match {
+  position: absolute;
+  width: 75px;
+  height: 74px;
+  border: 6px solid #F00;
+}
+</style>
+
+<body>
+
+<div>試練場: 1F</div>
+
+<div>
+  <form id="search" method="GET">
+    <input type="text" size="3" value="100" name="x">
+    <input type="text" size="3" value="100" name="y">
+    <input type="submit" value="探索">
+  </form>
+</div>
+
+<div style="position:relative;">
+  <img src="M001.bmp">
+  <div id="match" style="display:none;"></div>
+</div>
+</body>
+
+<script>
+var map1 = {
+  "3x1": [0,0],
+  "7x0": [0,1],
+  "2x0": [0,2],
+  "6x1": [0,3],
+  "1x2": [0,4],
+  "2x8": [1,0],
+  "3x3": [1,2],
+  "6x5": [1,3],
+  "8x9": [1,4],
+  "7x6": [2,0],
+  "4x7": [2,1],
+  "0x6": [2,2],
+  "0x3": [2,3],
+  "5x4": [2,4],
+  "5x0": [3,2],
+  "8x0": [4,2],
+  "9x0": [4,2],
+  "8x1": [4,2],
+  "9x1": [4,2],
+};
+
+var left   = 12;
+var bottom = 12;
+var room   = 33;
+var block  = 5;
+
+var size   = 100;
+
+$(function() {
+    $("#search").submit(function() {
+        var data = $(this).serializeArray();
+
+        var x  = parseInt(data[0]['value']);
+        var y  = parseInt(data[1]['value']);
+        var mx = Math.floor((x - bottom) / (room + block));
+        var my = Math.floor((y - left) / (room + block));
+
+        console.log({
+            x: x,
+            y: y,
+            mx: mx,
+            my: my,
+        });
+
+        var key = mx + "x" + my;
+        console.log(key);
+
+        if (map1[key]) {
+            console.log(map1[key]);
+            $("#match").css({"display": "block", "top": ((4 - map1[key][0]) * size) + "px", "left": (map1[key][1] * size) + "px"});
+        } else {
+            $("#match").css({"display": "none"});
+        }
+
+        return false;
+    });
+});
+
+// 部屋: 33 * 33
+// 壁　: 5
+// 左　: 12
+// 下　: 12
+// ボス部屋：8x0 8x1 9x0 9x1
+</script>
+
+</html>
