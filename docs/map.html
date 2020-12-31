@@ -15,7 +15,12 @@ div#match {
   position: absolute;
   width: 75px;
   height: 74px;
-  border: 6px solid #F00;
+  border: 6px solid #f00;
+}
+
+div#err {
+  color: #f00;
+  font-weight: bold;
 }
 </style>
 
@@ -35,6 +40,8 @@ div#match {
   <img src="M001.bmp">
   <div id="match" style="display:none;"></div>
 </div>
+
+<div id="err" style="display:none;">対象の部屋はありません。</div>
 </body>
 
 <script>
@@ -76,21 +83,15 @@ $(function() {
         var mx = Math.floor((x - bottom) / (room + block));
         var my = Math.floor((y - left) / (room + block));
 
-        console.log({
-            x: x,
-            y: y,
-            mx: mx,
-            my: my,
-        });
-
         var key = mx + "x" + my;
         console.log(key);
 
         if (map1[key]) {
-            console.log(map1[key]);
             $("#match").css({"display": "block", "top": ((4 - map1[key][0]) * size) + "px", "left": (map1[key][1] * size) + "px"});
+            $("#err").css({"display": "none"});
         } else {
             $("#match").css({"display": "none"});
+            $("#err").css({"display": "block"});
         }
 
         return false;
