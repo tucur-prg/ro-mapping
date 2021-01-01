@@ -11,6 +11,23 @@ div {
   margin-bottom: 20px;
 }
 
+div.nav {
+    display: flex;
+}
+div.nav span {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-right: 16px;
+}
+span.floor {
+    cursor: pointer;
+    user-select: none;
+    background: #ccc;
+}
+span.select {
+    background: #ccf;
+}
+
 div#match {
   position: absolute;
   width: 75px;
@@ -26,7 +43,14 @@ div#err {
 
 <body>
 
-<div>試練場: 1F</div>
+<div class="nav">
+  <span>試練場</span>
+  <span class="floor select" key="M001">1F</span>
+  <span class="floor" key="M002">2F</span>
+  <span class="floor" key="M003">3F</span>
+  <span class="floor" key="M004">4F</span>
+  <span class="floor" key="M005">5F</span>
+</div>
 
 <div>
   <form id="search" method="GET">
@@ -37,7 +61,7 @@ div#err {
 </div>
 
 <div style="position:relative;">
-  <img src="M001.bmp">
+  <img id="map" src="M001.bmp">
   <div id="match" style="display:none;"></div>
 </div>
 
@@ -45,26 +69,94 @@ div#err {
 </body>
 
 <script>
-var map1 = {
-  "3x1": [0,0],
-  "7x0": [0,1],
-  "2x0": [0,2],
-  "6x1": [0,3],
-  "1x2": [0,4],
-  "2x8": [1,0],
-  "3x3": [1,2],
-  "6x5": [1,3],
-  "8x9": [1,4],
-  "7x6": [2,0],
-  "4x7": [2,1],
-  "0x6": [2,2],
-  "0x3": [2,3],
-  "5x4": [2,4],
-  "5x0": [3,2],
-  "8x0": [4,2],
-  "9x0": [4,2],
-  "8x1": [4,2],
-  "9x1": [4,2],
+var map = {
+  "M001": {
+    "3x1": [0,0],
+    "7x0": [0,1],
+    "2x0": [0,2],
+    "6x1": [0,3],
+    "1x2": [0,4],
+    "2x8": [1,0],
+    "3x3": [1,2],
+    "6x5": [1,3],
+    "8x9": [1,4],
+    "7x6": [2,0],
+    "4x7": [2,1],
+    "0x6": [2,2],
+    "0x3": [2,3],
+    "5x4": [2,4],
+    "5x0": [3,2],
+    "8x0": [4,2],
+    "9x0": [4,2],
+    "8x1": [4,2],
+    "9x1": [4,2],
+  },
+  "M002": {
+    "2x0": [0,4],
+    "5x0": [1,4],
+    "4x4": [2,4],
+    "8x3": [2,3],
+    "4x6": [3,3],
+    "5x3": [3,2],
+    "8x0": [2,2],
+    "8x1": [2,2],
+    "9x0": [2,2],
+    "9x1": [2,2],
+  },
+  "M003": {
+    "0x1": [0,0],
+    "2x0": [0,1],
+    "3x1": [0,2],
+    "5x2": [0,3],
+    "0x5": [1,1],
+    "2x5": [1,2],
+    "0x3": [1,3],
+    "6x1": [1,4],
+    "1x2": [2,0],
+    "9x3": [2,1],
+    "3x6": [2,2],
+    "7x0": [2,3],
+    "8x4": [2,4],
+    "0x2": [3,0],
+    "5x4": [3,1],
+    "2x7": [3,2],
+    "7x4": [3,3],
+    "7x9": [3,4],
+    "2x9": [4,0],
+    "8x0": [4,1],
+    "8x1": [4,1],
+    "9x0": [4,1],
+    "9x1": [4,1],
+    "4x9": [4,2],
+    "9x9": [4,3],
+    "7x6": [4,4],
+  },
+  "M004": {
+    "0x0": [0,0],
+    "0x2": [1,0],
+    "5x0": [2,0],
+    "1x3": [3,0],
+    "2x6": [4,0],
+    "9x9": [4,1],
+    "5x4": [4,2],
+  },
+  "M005": {
+    "0x0": [0,0],
+    "7x0": [0,1],
+    "4x1": [0,2],
+    "8x0": [1,2],
+    "8x1": [1,2],
+    "9x0": [1,2],
+    "9x1": [1,2],
+    "1x1": [2,2],
+    "7x4": [2,3],
+    "5x4": [2,4],
+    "5x0": [3,2],
+    "8x5": [3,4],
+    "1x9": [4,0],
+    "9x9": [4,1],
+    "9x7": [4,2],
+  },
 };
 
 var left   = 12;
@@ -73,6 +165,8 @@ var room   = 33;
 var block  = 5;
 
 var size   = 100;
+
+var mKey = "M001";
 
 $(function() {
     $("#search").submit(function() {
@@ -86,8 +180,8 @@ $(function() {
         var key = mx + "x" + my;
         console.log(key);
 
-        if (map1[key]) {
-            $("#match").css({"display": "block", "top": ((4 - map1[key][0]) * size) + "px", "left": (map1[key][1] * size) + "px"});
+        if (map[mKey][key]) {
+            $("#match").css({"display": "block", "top": ((4 - map[mKey][key][0]) * size) + "px", "left": (map[mKey][key][1] * size) + "px"});
             $("#err").css({"display": "none"});
         } else {
             $("#match").css({"display": "none"});
@@ -95,6 +189,17 @@ $(function() {
         }
 
         return false;
+    });
+
+    $(".floor").click(function() {
+        $(".floor").removeClass('select');
+        $(this).addClass('select');
+
+        $("#match").css({"display": "none"});
+        $("#err").css({"display": "none"});
+
+        mKey = $(this).attr('key');
+        $('#map').attr('src', mKey + ".bmp");
     });
 });
 
