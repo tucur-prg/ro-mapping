@@ -7,8 +7,11 @@
 </head>
 
 <style>
+body {
+    min-width: 700px;
+}
 div {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 div.nav {
@@ -18,6 +21,10 @@ div.nav span {
     display: inline-block;
     padding: 6px 12px;
     margin-right: 16px;
+}
+
+div.main {
+    margin-left: 70px;
 }
 span.floor {
     cursor: pointer;
@@ -29,15 +36,70 @@ span.select {
 }
 
 div#match {
-  position: absolute;
-  width: 75px;
-  height: 74px;
-  border: 6px solid #f00;
+    position: absolute;
+    width: 75px;
+    height: 74px;
+    border: 6px solid #f00;
 }
 
 div#err {
-  color: #f00;
-  font-weight: bold;
+    color: #f00;
+    font-weight: bold;
+}
+
+.N {
+    position: absolute;
+    left: -50px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.NStr {
+    top: 0;
+}
+.N4 {
+    top: 30px;
+    left: -40px;
+}
+.N3 {
+    top: 130px;
+    left: -40px;
+}
+.N2 {
+    top: 230px;
+    left: -40px;
+}
+.N1 {
+    top: 330px;
+    left: -40px;
+}
+.N0 {
+    top: 430px;
+    left: -40px;
+}
+.E {
+    position: absolute;
+    bottom: -35px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.EStr {
+    left: 0;
+    bottom: -50px;
+}
+.E4 {
+    left: 440px;
+}
+.E3 {
+    left: 340px;
+}
+.E2 {
+    left: 240px;
+}
+.E1 {
+    left: 140px;
+}
+.E0 {
+    left: 40px;
 }
 </style>
 
@@ -57,20 +119,34 @@ div#err {
   <span class="floor" key="M010">10F</span>
 </div>
 
-<div>
-  <form id="search" method="GET">
-    <input type="text" size="3" value="100" name="x">
-    <input type="text" size="3" value="100" name="y">
-    <input type="submit" value="探索">
-  </form>
-</div>
+<div class="main">
+  <div>
+    <form id="search" method="GET">
+      <input type="text" size="3" value="100" name="x">
+      <input type="text" size="3" value="100" name="y">
+      <input type="submit" value="探索">
+    </form>
+  </div>
 
-<div style="position:relative;">
-  <img id="map" src="M001.bmp">
-  <div id="match" style="display:none;"></div>
-</div>
+  <div style="position:relative;">
+    <img id="map" src="M001.bmp">
+    <div id="match" style="display:none;"></div>
+    <span class="N NStr">N ↓</span>
+    <span class="N N4">4</span>
+    <span class="N N3">3</span>
+    <span class="N N2">2</span>
+    <span class="N N1">1</span>
+    <span class="N N0">0</span>
+    <span class="E EStr">E<br>→</span>
+    <span class="E E4">4</span>
+    <span class="E E3">3</span>
+    <span class="E E2">2</span>
+    <span class="E E1">1</span>
+    <span class="E E0">0</span>
+  </div>
 
-<div id="err" style="display:none;">対象の部屋はありません。</div>
+  <div id="err" style="display:none;">対象の部屋はありません。</div>
+</div>
 </body>
 
 <script>
